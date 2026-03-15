@@ -52,6 +52,37 @@
 .stat-badge strong {
   font-size: 14px;
 }
+.filter-bar {
+  display: flex;
+  gap: 6px;
+}
+.filter-btn {
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1.5px solid transparent;
+  border-radius: 20px;
+  padding: 5px 13px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .12s, color .12s, border-color .12s;
+  font-family: inherit;
+}
+.filter-btn:hover {
+  background: #e2e8f0;
+  color: #334155;
+}
+.filter-btn--active {
+  background: #1e293b;
+  color: #fff;
+  border-color: #1e293b;
+}
+.filter-btn--active:hover {
+  background: #0f172a;
+  color: #fff;
+}
+
 .btn-add {
   background: #6366f1;
   color: #fff;

@@ -38,6 +38,7 @@ export default function App() {
   const [tasks, setTasks] = useState(loadTasks)
   const [showModal, setShowModal] = useState(false)
   const [editingTask, setEditingTask] = useState(null)
+  const [filterPriority, setFilterPriority] = useState('all')
 
   const updateTasks = useCallback((updater) => {
     setTasks(prev => {
@@ -75,6 +76,10 @@ export default function App() {
     updateTasks(prev => prev.map(t => t.id === id ? { ...t, title, description, priority } : t))
   }, [updateTasks])
 
+  const filteredTasks = filterPriority === 'all'
+    ? tasks
+    : tasks.filter(t => t.priority === filterPriority)
+
   const counts = COLUMNS.reduce((acc, col) => {
     acc[col.id] = tasks.filter(t => t.status === col.id).length
     return acc
@@ -93,6 +98,24 @@ export default function App() {
                 </span>
               ))}
             </div>
+            <div className="filter-bar">
+              <button
+                className={`filter-btn ${filterPriority === 'all' ? 'filter-btn--active' : ''}`}
+                onClick={() => setFilterPriority('all')}
+              >
+                すべて
+              </button>
+              {PRIORITIES.map(p => (
+                <button
+                  key={p.value}
+                  className={`filter-btn ${filterPriority === p.value ? 'filter-btn--active' : ''}`}
+                  style={filterPriority === p.value ? { background: p.color, borderColor: p.color, color: '#fff' } : { '--hover-color': p.color }}
+                  onClick={() => setFilterPriority(prev => prev === p.value ? 'all' : p.value)}
+                >
+                  {p.label}優先度
+                </button>
+              ))}
+            </div>
             <button className="btn-add" onClick={() => setShowModal(true)}>
               ＋ タスク追加
             </button>
@@ -102,7 +125,7 @@ export default function App() {
 
       <main className="main">
         <Board
-          tasks={tasks}
+          tasks={filteredTasks}
           columns={COLUMNS}
           priorities={PRIORITIES}
           onMove={moveTask}
