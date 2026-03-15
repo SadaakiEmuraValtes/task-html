@@ -14,6 +14,7 @@ export default function TaskCard({
   return (
     <div
       className={`task-card ${isDragging ? 'task-card--dragging' : ''} ${isDone ? 'task-card--done' : ''}`}
+      style={{ '--priority-color': priority.color }}
       draggable
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
