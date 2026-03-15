@@ -207,6 +207,7 @@
   line-height: 1;
 }
 .icon-btn:hover { background: #f1f5f9; color: #475569; }
+.icon-btn--edit:hover { background: #eff6ff; color: #3b82f6; }
 .icon-btn--delete:hover { background: #fee2e2; color: #ef4444; }
 
 .task-title {

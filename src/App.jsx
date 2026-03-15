@@ -37,6 +37,7 @@ function saveTasks(tasks) {
 export default function App() {
   const [tasks, setTasks] = useState(loadTasks)
   const [showModal, setShowModal] = useState(false)
+  const [editingTask, setEditingTask] = useState(null)
 
   const updateTasks = useCallback((updater) => {
     setTasks(prev => {
@@ -68,6 +69,10 @@ export default function App() {
 
   const updatePriority = useCallback((id, priority) => {
     updateTasks(prev => prev.map(t => t.id === id ? { ...t, priority } : t))
+  }, [updateTasks])
+
+  const editTask = useCallback((id, { title, description, priority }) => {
+    updateTasks(prev => prev.map(t => t.id === id ? { ...t, title, description, priority } : t))
   }, [updateTasks])
 
   const counts = COLUMNS.reduce((acc, col) => {
@@ -103,6 +108,7 @@ export default function App() {
           onMove={moveTask}
           onDelete={deleteTask}
           onUpdatePriority={updatePriority}
+          onEdit={(task) => setEditingTask(task)}
         />
       </main>
 
@@ -111,6 +117,14 @@ export default function App() {
           priorities={PRIORITIES}
           onAdd={addTask}
           onClose={() => setShowModal(false)}
+        />
+      )}
+      {editingTask && (
+        <AddTaskModal
+          priorities={PRIORITIES}
+          initialTask={editingTask}
+          onEdit={(data) => editTask(editingTask.id, data)}
+          onClose={() => setEditingTask(null)}
         />
       )}
     </div>

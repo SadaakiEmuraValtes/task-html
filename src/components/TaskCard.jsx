@@ -3,7 +3,7 @@ import { useState } from 'react'
 export default function TaskCard({
   task, priorities, isDragging,
   onDragStart, onDragEnd,
-  onDelete, onUpdatePriority,
+  onDelete, onUpdatePriority, onEdit,
   onMoveLeft, onMoveRight,
 }) {
   const [showPriorityMenu, setShowPriorityMenu] = useState(false)
@@ -49,6 +49,7 @@ export default function TaskCard({
           {onMoveRight && (
             <button className="icon-btn" onClick={onMoveRight} title="右へ移動">▶</button>
           )}
+          <button className="icon-btn icon-btn--edit" onClick={onEdit} title="編集">✏</button>
           <button className="icon-btn icon-btn--delete" onClick={onDelete} title="削除">✕</button>
         </div>
       </div>

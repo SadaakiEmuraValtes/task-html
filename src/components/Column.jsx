@@ -3,7 +3,7 @@ import TaskCard from './TaskCard'
 export default function Column({
   column, tasks, priorities, isOver, draggedId,
   onDragStart, onDragEnd, onDragEnter, onDragLeave, onDrop,
-  onDelete, onUpdatePriority, onMoveLeft, onMoveRight,
+  onDelete, onUpdatePriority, onEdit, onMoveLeft, onMoveRight,
 }) {
   return (
     <div
@@ -34,6 +34,7 @@ export default function Column({
             onDragEnd={onDragEnd}
             onDelete={() => onDelete(task.id)}
             onUpdatePriority={(p) => onUpdatePriority(task.id, p)}
+            onEdit={() => onEdit(task)}
             onMoveLeft={onMoveLeft ? () => onMoveLeft(task.id) : null}
             onMoveRight={onMoveRight ? () => onMoveRight(task.id) : null}
           />

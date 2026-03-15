@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react'
 import Column from './Column'
 
-export default function Board({ tasks, columns, priorities, onMove, onDelete, onUpdatePriority }) {
+export default function Board({ tasks, columns, priorities, onMove, onDelete, onUpdatePriority, onEdit }) {
   const [draggedId, setDraggedId] = useState(null)
   const [overColId, setOverColId] = useState(null)
   const dragCounter = useRef({})
@@ -73,6 +73,7 @@ export default function Board({ tasks, columns, priorities, onMove, onDelete, on
             onDrop={() => handleDrop(col.id)}
             onDelete={onDelete}
             onUpdatePriority={onUpdatePriority}
+            onEdit={onEdit}
             onMoveLeft={colIdx > 0 ? moveLeft : null}
             onMoveRight={colIdx < columns.length - 1 ? moveRight : null}
           />

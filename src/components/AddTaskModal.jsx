@@ -1,13 +1,15 @@
 import { useState, useEffect, useRef } from 'react'
 
-export default function AddTaskModal({ priorities, onAdd, onClose }) {
-  const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
-  const [priority, setPriority] = useState('medium')
+export default function AddTaskModal({ priorities, onAdd, onEdit, onClose, initialTask }) {
+  const isEdit = Boolean(initialTask)
+  const [title, setTitle] = useState(initialTask?.title ?? '')
+  const [description, setDescription] = useState(initialTask?.description ?? '')
+  const [priority, setPriority] = useState(initialTask?.priority ?? 'medium')
   const inputRef = useRef(null)
 
   useEffect(() => {
     inputRef.current?.focus()
+    inputRef.current?.select()
     const onKey = (e) => { if (e.key === 'Escape') onClose() }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
@@ -16,7 +18,11 @@ export default function AddTaskModal({ priorities, onAdd, onClose }) {
   const handleSubmit = (e) => {
     e.preventDefault()
     if (!title.trim()) return
-    onAdd({ title: title.trim(), description: description.trim(), priority })
+    if (isEdit) {
+      onEdit({ title: title.trim(), description: description.trim(), priority })
+    } else {
+      onAdd({ title: title.trim(), description: description.trim(), priority })
+    }
     onClose()
   }
 
@@ -24,7 +30,7 @@ export default function AddTaskModal({ priorities, onAdd, onClose }) {
     <div className="modal-overlay" onClick={(e) => { if (e.target === e.currentTarget) onClose() }}>
       <div className="modal">
         <div className="modal-header">
-          <h2>タスクを追加</h2>
+          <h2>{isEdit ? 'タスクを編集' : 'タスクを追加'}</h2>
           <button className="modal-close" onClick={onClose}>✕</button>
         </div>
 
@@ -63,7 +69,6 @@ export default function AddTaskModal({ priorities, onAdd, onClose }) {
                   type="button"
                   className={`priority-option ${priority === p.value ? 'priority-option--active' : ''}`}
                   style={{
-                    '--p-color': p.color,
                     borderColor: priority === p.value ? p.color : 'transparent',
                     color: priority === p.value ? p.color : '#666',
                     background: priority === p.value ? p.color + '15' : '#f5f5f5',
@@ -78,7 +83,9 @@ export default function AddTaskModal({ priorities, onAdd, onClose }) {
 
           <div className="modal-footer">
             <button type="button" className="btn-cancel" onClick={onClose}>キャンセル</button>
-            <button type="submit" className="btn-submit" disabled={!title.trim()}>追加する</button>
+            <button type="submit" className="btn-submit" disabled={!title.trim()}>
+              {isEdit ? '保存する' : '追加する'}
+            </button>
           </div>
         </form>
       </div>
